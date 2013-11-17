@@ -1,1 +1,15 @@
+# Maven
 target/
+/jar/
+classes/
+*.class
+
+# OS, editor, and temporary files
+Thumbs.db
+desktop.ini
+.DS_Store
+~*
+*~
+
+# Generic
+*.local.*

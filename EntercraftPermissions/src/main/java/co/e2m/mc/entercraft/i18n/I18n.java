@@ -1,7 +1,7 @@
-package co.e2m.mc.entercraft.permissions.i18n;
+package co.e2m.mc.entercraft.i18n;
 
-import co.e2m.mc.entercraft.permissions.Component;
-import co.e2m.mc.entercraft.permissions.EntercraftPermissionsPlugin;
+import co.e2m.mc.entercraft.api.IComponentsPlugin;
+import co.e2m.mc.entercraft.api.Component;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -21,9 +21,9 @@ import lombok.Getter;
 // TODO: Specify file from which to load localization strings
 public final class I18n extends Component
 {
-	private final static Map<Formats, String> formats = new EnumMap<>(Formats.class);
-	private final static Pattern tokenizeRegex = Pattern.compile("\\s+:");
-	private final static Matcher craftizeMatcher = Pattern.compile("&([^&])").matcher("");
+	private static final Map<Formats, String> formats = new EnumMap<>(Formats.class);
+	private static final Pattern tokenizeRegex = Pattern.compile("\\s+:");
+	private static final Matcher craftizeMatcher = Pattern.compile("&([^&])").matcher("");
 
 	@Getter
 	private static I18n instance;
@@ -33,11 +33,11 @@ public final class I18n extends Component
 	 *
 	 * @param plugin the parent plugin from which some information may be acquired, such as logger
 	 */
-	public I18n(final EntercraftPermissionsPlugin plugin)
+	public I18n(final IComponentsPlugin plugin)
 	{
 		super(plugin);
 
-		load(null);
+		loadDefaults();
 	}
 
 	/**
@@ -118,6 +118,17 @@ public final class I18n extends Component
 	}
 
 	/**
+	 * Load the default fallback formats.
+	 */
+	public void loadDefaults()
+	{
+		for (final Formats format : Formats.values())
+		{
+			formats.put(format, craftize(format.getFallback()));
+		}
+	}
+
+	/**
 	 * Load locale from file or defaults from code.
 	 *
 	 * @param localeFile the file to load, or null for defaults
@@ -125,76 +136,74 @@ public final class I18n extends Component
 	 */
 	public boolean load(final File localeFile)
 	{
-		boolean isSuccess = false;
-
 		if (localeFile == null)
 		{
-			// This could be an initial load, so we we can't throw localized exceptions.
-
-			for (final Formats format : Formats.values())
-			{
-				formats.put(format, craftize(format.getFallback()));
-				isSuccess = true;
-			}
+			loadDefaults();
+			return true;
 		}
-		else
+
+		try (
+				final FileReader fileReader = new FileReader(localeFile);
+				final BufferedReader reader = new BufferedReader(fileReader);
+			)
 		{
-			// We've at least initialized with fallback formats, so it's safe to use localized exceptions.
+			boolean isSuccess = false;
 
-			if (!localeFile.exists())
+			for (String line; (line = reader.readLine()) != null;)
 			{
-				getLogger().log(Level.WARNING, i(Formats.Error_Locale_FileNonExistent, localeFile));
-				return false;
-			}
-
-			try (
-					final FileReader fileReader = new FileReader(localeFile);
-					final BufferedReader reader = new BufferedReader(fileReader);
-				)
-			{
-
-				for (String line; (line = reader.readLine()) != null;)
+				if (loadLine(line))
 				{
-					if (line.isEmpty() || line.startsWith("#"))
-					{
-						continue;
-					}
-
-					final String[] tokens = tokenizeRegex.split(line, 2);
-					if (tokens.length < 2)
-					{
-						continue;
-					}
-					final String node = tokens[0];
-					final String formatText = tokens[1];
-
-					final Formats formatKey;
-					try
-					{
-						formatKey = Formats.valueOf(node.replace(Formats.NODE_SEPARATOR, '_'));
-					}
-					catch (IllegalArgumentException ex)
-					{
-						getLogger().log(Level.WARNING, i(Formats.Error_Locale_NodeInvalid, node), ex);
-						continue;
-					}
-
-					formats.put(formatKey, formatText);
 					isSuccess = true;
 				}
 			}
-			catch (final FileNotFoundException ex)
-			{
-				getLogger().log(Level.WARNING, i(Formats.Error_Locale_FileNonExistent, localeFile), ex);
-				return false;
-			}
-			catch (final IOException ex)
-			{
-				getLogger().log(Level.WARNING, i(Formats.Error_Generic_CannotOpenFile, localeFile), ex);
-				return false;
-			}
+
+			return isSuccess;
+		}
+		catch (final FileNotFoundException ex)
+		{
+			getLogger().log(Level.WARNING, i(Formats.Error_Locale_FileNonExistent, localeFile), ex);
+			return false;
+		}
+		catch (final IOException ex)
+		{
+			getLogger().log(Level.WARNING, i(Formats.Error_Generic_CannotOpenFile, localeFile), ex);
+			return false;
+		}
+	}
+
+	/**
+	 * Attempts to load a single line of locale data, typically from a file.
+	 *
+	 * @param line the line of locale data from a text file
+	 * @return true if successful; otherwise, false
+	 */
+	private boolean loadLine(final String line)
+	{
+		if (line.isEmpty() || line.startsWith("#"))
+		{
+			return false;
 		}
 
-		return isSuccess;
+		final String[] tokens = tokenizeRegex.split(line, 2);
+		if (tokens.length < 2)
+		{
+			return false;
+		}
+		final String node = tokens[0];
+		final String formatText = tokens[1];
+
+		final Formats formatKey;
+		try
+		{
+			formatKey = Formats.valueOf(node.replace(Formats.NODE_SEPARATOR, '_'));
+		}
+		catch (final IllegalArgumentException ex)
+		{
+			getLogger().log(Level.WARNING, i(Formats.Error_Locale_NodeInvalid, node), ex);
+			return false;
+		}
+
+		formats.put(formatKey, formatText);
+		return true;
 	}
 }

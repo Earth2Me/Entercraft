@@ -1,5 +1,5 @@
 
-package co.e2m.mc.entercraft.permissions;
+package co.e2m.mc.entercraft.api;
 
 import java.util.logging.Logger;
 import lombok.Getter;
@@ -13,8 +13,11 @@ import org.bukkit.Bukkit;
 @RequiredArgsConstructor
 public abstract class Component implements IComponent
 {
+	/**
+	 * {@inheritDoc}
+	 */
 	@Getter
-	private final transient EntercraftPermissionsPlugin plugin;
+	private final transient IComponentsPlugin plugin;
 
 	/**
 	 * Gets the logger for the current plugin.

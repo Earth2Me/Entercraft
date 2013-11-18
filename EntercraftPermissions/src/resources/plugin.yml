@@ -5,28 +5,27 @@ load: STARTUP
 authors:
   - Zenexer
 website: 'http://e2m.co/'
-main: 'co.e2m.mc.entercraft.permissions.EntercraftPermissionsPlugin'
+main: 'co.e2m.mc.entercraft.permissions.plugin.EntercraftPermissionsPlugin'
 depend:
   - Vault
 loadbefore:
   - Essentials
   - WorldEdit
 commands:
-  cp:
+  perm:
     description: 'Base for all EntercraftPermissions commands'
-    permission: 'cloudpermissions.commands'
+    permission: 'entercraft.permissions.commands'
     usage: 'For help, use /<command> help'
     aliases:
-      - cloudp
-      - cperms
-      - cloudpermissions
+      - perms
+      - permissions
 permissions:
-  cloudpermissions.commands:
+  entercraft.permissions.commands:
     description: 'Allows access to EntercraftPermissions commands via /cp'
     children:
-      cloudpermissions.commands.version: true
-      cloudpermissions.commands.reload: true
-  cloudpermissions.commands.version:
+      entercraft.permissions.commands.version: true
+      entercraft.permissions.commands.reload: true
+  entercraft.permissions.commands.version:
     description: 'Outputs version information about EntercraftPermissions'
-  cloudpermissions.commands.reload:
+  entercraft.permissions.commands.reload:
     description: 'Reloads the EntercraftPermissions configuration YAML'

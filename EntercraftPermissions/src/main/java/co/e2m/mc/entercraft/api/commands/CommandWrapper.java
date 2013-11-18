@@ -1,30 +1,31 @@
-package co.e2m.mc.entercraft.permissions.commands;
+package co.e2m.mc.entercraft.api.commands;
 
-import co.e2m.mc.entercraft.permissions.Component;
-import co.e2m.mc.entercraft.permissions.EntercraftPermissionsPlugin;
+import co.e2m.mc.entercraft.api.IComponentsPlugin;
+import co.e2m.mc.entercraft.api.Component;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Getter;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
 
 
 /**
- * Wraps all other commands with one base command, typically /cp.
+ * Wraps all other commands under one base command.
  */
-public final class CommandWrapper extends Component implements CommandExecutor, TabCompleter
+public abstract class CommandWrapper extends Component implements ICommandWrapper
 {
 	/**
-	 * Default subcommand used if none is specified.
+	 * Gets all subcommands by their associated names and aliases.
+	 *
+	 * @return a mutable map of subcommands by their associated names and aliases
 	 */
-	public static final String DEFAULT_SUBCOMMAND = "help";
-
+	@Getter(AccessLevel.PROTECTED)
 	/**
 	 * Maps names and aliases to subcommand handlers.
 	 */
@@ -35,16 +36,27 @@ public final class CommandWrapper extends Component implements CommandExecutor, 
 	 *
 	 * @param plugin the parent plugin
 	 */
-	public CommandWrapper(final EntercraftPermissionsPlugin plugin)
+	public CommandWrapper(final IComponentsPlugin plugin)
 	{
 		super(plugin);
 	}
 
 	/**
-	 * Registers a new subcommand.
+	 * Gets the subcommand to use if no subcommand is specified.
 	 *
-	 * @param command the subcommand to register
+	 * By default, this is "help".
+	 *
+	 * @return the default subcommand
 	 */
+	protected String getDefaultSubCommand()
+	{
+		return "help";
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void add(final ISubCommand command)
 	{
 		for (final String alias : command.getAliases())
@@ -56,12 +68,29 @@ public final class CommandWrapper extends Component implements CommandExecutor, 
 	}
 
 	/**
-	 * Clears all subcommands.
+	 * {@inheritDoc}
 	 */
+	@Override
 	public void clear()
 	{
 		subcommands.clear();
 	}
+
+	/**
+	 * @{inheritDoc}
+	 */
+	@Override
+	public void onLoad()
+	{
+		onLoadSubCommands();
+
+		super.onLoad();
+	}
+
+	/**
+	 * Load the subcommands.
+	 */
+	protected abstract void onLoadSubCommands();
 
 	/**
 	 * Retrieves subcommand details from a command invocation.
@@ -69,14 +98,14 @@ public final class CommandWrapper extends Component implements CommandExecutor, 
 	 * @param info command invocation information; typically arguments passed to on* methods
 	 * @return contains subcommand handler and any information to be passed to it
 	 */
-	private CommandInfo getSubCommandInfo(final CommandInfo info)
+	protected CommandInfo getSubCommandInfo(final CommandInfo info)
 	{
 		final String[] args = info.getArgs();
 
 		final String sublabel;
 		if (args == null || args.length < 1)
 		{
-			sublabel = DEFAULT_SUBCOMMAND;
+			sublabel = getDefaultSubCommand();
 		}
 		else
 		{
@@ -148,7 +177,7 @@ public final class CommandWrapper extends Component implements CommandExecutor, 
 	 * Holds basic on* method arguments for commands, as well as an optional associated subcommand handler.
 	 */
 	@Data
-	private class CommandInfo
+	protected static class CommandInfo
 	{
 		private final CommandSender sender;
 		private final Command command;

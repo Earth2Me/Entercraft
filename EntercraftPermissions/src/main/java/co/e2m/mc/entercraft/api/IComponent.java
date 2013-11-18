@@ -1,5 +1,4 @@
-
-package co.e2m.mc.entercraft.permissions;
+package co.e2m.mc.entercraft.api;
 
 
 /**
@@ -7,6 +6,13 @@ package co.e2m.mc.entercraft.permissions;
  */
 public interface IComponent
 {
+	/**
+	 * Gets the associated plugin.
+	 *
+	 * @return the associated plugin
+	 */
+	IComponentsPlugin getPlugin();
+
 	/**
 	 * Fired when the component is ready to be enabled, but before it is enabled.
 	 *

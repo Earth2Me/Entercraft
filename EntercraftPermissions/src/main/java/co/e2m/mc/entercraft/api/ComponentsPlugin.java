@@ -1,9 +1,8 @@
-package co.e2m.mc.entercraft.permissions;
+package co.e2m.mc.entercraft.api;
 
-import co.e2m.mc.entercraft.permissions.commands.CommandWrapper;
-import co.e2m.mc.entercraft.permissions.i18n.Formats;
-import co.e2m.mc.entercraft.permissions.i18n.I18n;
-import static co.e2m.mc.entercraft.permissions.i18n.I18n.i;
+import co.e2m.mc.entercraft.i18n.Formats;
+import co.e2m.mc.entercraft.i18n.I18n;
+import static co.e2m.mc.entercraft.i18n.I18n.i;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -13,9 +12,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 
 /**
- * Provides the main entrypoint and manager for the Bukkit plugin.
+ * Base implementation for all Entercraft plugins.
  */
-public final class EntercraftPermissionsPlugin extends JavaPlugin
+public abstract class ComponentsPlugin extends JavaPlugin implements IComponentsPlugin
 {
 	/**
 	 * Collection of all tracked plugin components.
@@ -34,28 +33,18 @@ public final class EntercraftPermissionsPlugin extends JavaPlugin
 	private transient I18n i18n;
 
 	/**
-	 * Gets the command wrapper component.  The command wrapper delegates subcommand handling.
-	 *
-	 * @return the command wrapper component
-	 */
-	@Getter
-	/**
-	 * The command wrapper component.
-	 */
-	private transient CommandWrapper commandWrapper;
-
-	/**
 	 * Used to prevent more than one call to onLoad.
 	 */
 	private transient boolean isLoaded = false;
 
 	/**
 	 * Loads all core components. Invoked when the plugin first loads.
+	 *
+	 * Be sure to call super's implementation first when overriding for internationalization support.
 	 */
-	private void loadComponents()
+	protected void onLoadComponents()
 	{
 		i18n = addComponent(new I18n(this));
-		commandWrapper = addComponent(new CommandWrapper(this));
 	}
 
 	/**
@@ -63,7 +52,8 @@ public final class EntercraftPermissionsPlugin extends JavaPlugin
 	 *
 	 * @return an unmodifiable list of all tracked plugin components
 	 */
-	public List<IComponent> getComponents()
+	@Override
+	public final List<IComponent> getComponents()
 	{
 		return Collections.unmodifiableList(components);
 	}
@@ -78,7 +68,8 @@ public final class EntercraftPermissionsPlugin extends JavaPlugin
 	 * @param component an instantiated component to load
 	 * @return the component if successful; otherwise, null
 	 */
-	public <T extends IComponent> T addComponent(final T component)
+	@Override
+	public final <T extends IComponent> T addComponent(final T component)
 	{
 		try
 		{
@@ -92,7 +83,7 @@ public final class EntercraftPermissionsPlugin extends JavaPlugin
 			components.add(component);
 			return component;
 		}
-		catch (Throwable ex)
+		catch (Exception ex)
 		{
 			getLogger().log(Level.SEVERE, i(Formats.Error_State_LoadFailed, component.getClass()), ex);
 			return null;
@@ -102,7 +93,8 @@ public final class EntercraftPermissionsPlugin extends JavaPlugin
 	/**
 	 * Reloads all components.
 	 */
-	public void reload()
+	@Override
+	public final void reload()
 	{
 		onReload();
 	}
@@ -119,7 +111,7 @@ public final class EntercraftPermissionsPlugin extends JavaPlugin
 		}
 		isLoaded = true;
 
-		loadComponents();
+		onLoadComponents();
 
 		super.onLoad();
 	}
@@ -136,7 +128,7 @@ public final class EntercraftPermissionsPlugin extends JavaPlugin
 			{
 				component.onEnable();
 			}
-			catch (Throwable ex)
+			catch (Exception ex)
 			{
 				getLogger().log(Level.SEVERE, i(Formats.Error_State_EnableFailed, component.getClass()), ex);
 			}
@@ -157,7 +149,7 @@ public final class EntercraftPermissionsPlugin extends JavaPlugin
 			{
 				component.onDisable();
 			}
-			catch (Throwable ex)
+			catch (Exception ex)
 			{
 				getLogger().log(Level.SEVERE, i(Formats.Error_State_DisableFailed, component.getClass()), ex);
 			}
@@ -169,7 +161,7 @@ public final class EntercraftPermissionsPlugin extends JavaPlugin
 	/**
 	 * Fired when the plugin is to be reloaded.
 	 */
-	private void onReload()
+	protected void onReload()
 	{
 		reloadConfig();
 
@@ -179,7 +171,7 @@ public final class EntercraftPermissionsPlugin extends JavaPlugin
 			{
 				component.onReload();
 			}
-			catch (Throwable ex)
+			catch (Exception ex)
 			{
 				getLogger().log(Level.SEVERE, i(Formats.Error_State_ReloadFailed, component.getClass()), ex);
 			}

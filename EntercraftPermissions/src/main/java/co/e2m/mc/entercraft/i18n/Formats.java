@@ -1,4 +1,4 @@
-package co.e2m.mc.entercraft.permissions.i18n;
+package co.e2m.mc.entercraft.i18n;
 
 import lombok.Getter;
 

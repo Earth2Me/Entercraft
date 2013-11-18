@@ -1,7 +1,7 @@
-Entercraft
-==========
+EntercraftPermissions
+=====================
 
-Enterprise-style cloud environment for Minecraft with Bukkit.
+Cloud-oriented, NoSQL-based permissions plugin for Bukkit (Minecraft) utilizing Vault.
 
 License
 =======

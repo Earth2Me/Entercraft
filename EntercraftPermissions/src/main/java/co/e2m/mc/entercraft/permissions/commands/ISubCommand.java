@@ -1,4 +1,4 @@
-package com.earth2me.mc.cloudpermissions.commands;
+package co.e2m.mc.entercraft.permissions.commands;
 
 import java.util.Set;
 import org.bukkit.command.CommandExecutor;
@@ -10,5 +10,9 @@ import org.bukkit.command.TabCompleter;
  */
 public interface ISubCommand extends CommandExecutor, TabCompleter
 {
-	Set<String> getNames();
+	String getName();
+
+	Set<String> getAliases();
+
+	String getDescription();
 }

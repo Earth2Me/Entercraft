@@ -1,0 +1,5 @@
+Copyright (c) 2013 CowCraft Network and Earth2Me.  All rights reserved.
+"CowCraft" and "CowCraft Network" are trademarks of Edgaras Slezas.
+"Earth2Me" and "Zenexer" are trademarks of Paul Buonopane.
+
+Neither this software nor its source code can be used, modified, redistributed, or stored without the explicit written consent of Edgaras Slezas and/or Paul Buonopane.  This is NOT open source software.

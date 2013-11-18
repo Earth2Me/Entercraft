@@ -1,11 +1,11 @@
-name: CloudPermissions
+name: EntercraftPermissions
 version: ${build.number}
 description: 'Cloud-friendly Bukkit permissions plugin'
 load: STARTUP
 authors:
   - Zenexer
 website: 'http://e2m.co/'
-main: 'com.earth2me.mc.cloudpermissions.CloudPermissionsPlugin'
+main: 'co.e2m.mc.entercraft.permissions.EntercraftPermissionsPlugin'
 depend:
   - Vault
 loadbefore:
@@ -13,7 +13,7 @@ loadbefore:
   - WorldEdit
 commands:
   cp:
-    description: 'Base for all CloudPermissions commands'
+    description: 'Base for all EntercraftPermissions commands'
     permission: 'cloudpermissions.commands'
     usage: 'For help, use /<command> help'
     aliases:
@@ -22,11 +22,11 @@ commands:
       - cloudpermissions
 permissions:
   cloudpermissions.commands:
-    description: 'Allows access to CloudPermissions commands via /cp'
+    description: 'Allows access to EntercraftPermissions commands via /cp'
     children:
       cloudpermissions.commands.version: true
       cloudpermissions.commands.reload: true
   cloudpermissions.commands.version:
-    description: 'Outputs version information about CloudPermissions'
+    description: 'Outputs version information about EntercraftPermissions'
   cloudpermissions.commands.reload:
-    description: 'Reloads the CloudPermissions configuration YAML'
+    description: 'Reloads the EntercraftPermissions configuration YAML'

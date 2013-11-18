@@ -6,14 +6,14 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>com.earth2me.mc.cloudpermissions</groupId>
-		<artifactId>CloudPermissionsMaster</artifactId>
+		<groupId>com.earth2me.mc.entercraft</groupId>
+		<artifactId>Entercraft</artifactId>
 		<version>1.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<artifactId>CloudPermissions</artifactId>
-	<name>CloudPermissions</name>
+	<artifactId>EntercraftPermissions</artifactId>
+	<name>EntercraftPermissions</name>
     <build>
         <plugins>
             <plugin>

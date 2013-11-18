@@ -1,5 +1,7 @@
-package com.earth2me.mc.cloudpermissions.i18n;
+package co.e2m.mc.entercraft.permissions.i18n;
 
+import co.e2m.mc.entercraft.permissions.Component;
+import co.e2m.mc.entercraft.permissions.EntercraftPermissionsPlugin;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -8,17 +10,16 @@ import java.io.IOException;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.Getter;
-import org.bukkit.plugin.Plugin;
 
 
 /**
  * Internationalization manager.
  */
-public final class I18n
+// TODO: Specify file from which to load localization strings
+public final class I18n extends Component
 {
 	private final static Map<Formats, String> formats = new EnumMap<>(Formats.class);
 	private final static Pattern tokenizeRegex = Pattern.compile("\\s+:");
@@ -27,17 +28,14 @@ public final class I18n
 	@Getter
 	private static I18n instance;
 
-	@SuppressWarnings("NonConstantLogger")
-	private final Logger logger;
-
 	/**
 	 * Instantiates a new internationalization manager.
 	 *
 	 * @param plugin the parent plugin from which some information may be acquired, such as logger
 	 */
-	public I18n(Plugin plugin)
+	public I18n(final EntercraftPermissionsPlugin plugin)
 	{
-		this.logger = plugin.getLogger();
+		super(plugin);
 
 		load(null);
 	}
@@ -95,7 +93,7 @@ public final class I18n
 	 * @return a localized, formatted string
 	 */
 	// Synchronize documentation above.
-	public static String _(final Formats key, final Object... args)
+	public static String i(final Formats key, final Object... args)
 	{
 		if (instance == null)
 		{
@@ -145,13 +143,14 @@ public final class I18n
 
 			if (!localeFile.exists())
 			{
-				_(Formats.Error_Locale_FileNonExistent, localeFile);
+				getLogger().log(Level.WARNING, i(Formats.Error_Locale_FileNonExistent, localeFile));
 				return false;
 			}
 
 			try (
 					final FileReader fileReader = new FileReader(localeFile);
-					final BufferedReader reader = new BufferedReader(fileReader);)
+					final BufferedReader reader = new BufferedReader(fileReader);
+				)
 			{
 
 				for (String line; (line = reader.readLine()) != null;)
@@ -176,7 +175,7 @@ public final class I18n
 					}
 					catch (IllegalArgumentException ex)
 					{
-						logger.log(Level.WARNING, _(Formats.Error_Locale_NodeInvalid, node), ex);
+						getLogger().log(Level.WARNING, i(Formats.Error_Locale_NodeInvalid, node), ex);
 						continue;
 					}
 
@@ -186,12 +185,12 @@ public final class I18n
 			}
 			catch (final FileNotFoundException ex)
 			{
-				logger.log(Level.WARNING, _(Formats.Error_Locale_FileNonExistent, localeFile), ex);
+				getLogger().log(Level.WARNING, i(Formats.Error_Locale_FileNonExistent, localeFile), ex);
 				return false;
 			}
 			catch (final IOException ex)
 			{
-				logger.log(Level.WARNING, _(Formats.Error_Generic_CannotOpenFile, localeFile), ex);
+				getLogger().log(Level.WARNING, i(Formats.Error_Generic_CannotOpenFile, localeFile), ex);
 				return false;
 			}
 		}

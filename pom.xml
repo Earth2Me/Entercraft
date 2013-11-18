@@ -5,29 +5,29 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.earth2me.mc.cloudpermissions</groupId>
-	<artifactId>CloudPermissionsMaster</artifactId>
+	<groupId>com.earth2me.mc.entercraft</groupId>
+	<artifactId>Entercraft</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>CloudPermissionsMaster</name>
-	<url>https://github.com/Zenexer/CloudPermissions</url>
+	<name>Entercraft</name>
+	<url>https://github.com/Zenexer/Entercraft</url>
 
 	<organization>
 		<name>Earth2Me</name>
 		<url>http://e2m.co/</url>
 	</organization>
 	<scm>
-		<url>https://github.com/Zenexer/CloudPermissions</url>
-		<connection>scm:git:git://github.com:Zenexer/CloudPermissions.git</connection>
-		<developerConnection>scm:git:git@github.com:Zenexer/CloudPermissions.git</developerConnection>
+		<url>https://github.com/Zenexer/Entercraft</url>
+		<connection>scm:git:git://github.com:Zenexer/Entercraft.git</connection>
+		<developerConnection>scm:git:git@github.com:Zenexer/Entercraft.git</developerConnection>
 	</scm>
 	<issueManagement>
 		<system>GitHub</system>
-		<url>https://github.com/Zenexer/CloudPermissions/issues</url>
+		<url>https://github.com/Zenexer/Entercraft/issues</url>
 	</issueManagement>
 
 	<modules>
-		<module>CloudPermissions</module>
+		<module>EntercraftPermissions</module>
 	</modules>
 
 	<repositories>

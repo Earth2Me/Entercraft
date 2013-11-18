@@ -1,4 +1,4 @@
-package com.earth2me.mc.cloudpermissions.i18n;
+package co.e2m.mc.entercraft.permissions.i18n;
 
 import lombok.Getter;
 
@@ -15,6 +15,12 @@ public enum Formats
 	// Error/Locale
 	Error_Locale_FileNonExistent("An expected locale file does not exist: %s"),
 	Error_Locale_NodeInvalid("The specified locale node is invalid: %s"),
+
+	// Error/State
+	Error_State_LoadFailed("Component %s failed to load."),
+	Error_State_EnableFailed("Component %s failed to enable."),
+	Error_State_DisableFailed("Component %s failed to disable."),
+	Error_State_ReloadFailed("Component %s failed to reload."),
 	;
 
 	public static final char NODE_SEPARATOR = '/';

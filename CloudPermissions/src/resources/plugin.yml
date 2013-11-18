@@ -1,0 +1,32 @@
+name: CloudPermissions
+version: ${build.number}
+description: 'Cloud-friendly Bukkit permissions plugin'
+load: STARTUP
+authors:
+  - Zenexer
+website: 'http://e2m.co/'
+main: 'com.earth2me.mc.cloudpermissions.CloudPermissionsPlugin'
+depend:
+  - Vault
+loadbefore:
+  - Essentials
+  - WorldEdit
+commands:
+  cp:
+    description: 'Base for all CloudPermissions commands'
+    permission: 'cloudpermissions.commands'
+    usage: 'For help, use /<command> help'
+    aliases:
+      - cloudp
+      - cperms
+      - cloudpermissions
+permissions:
+  cloudpermissions.commands:
+    description: 'Allows access to CloudPermissions commands via /cp'
+    children:
+      cloudpermissions.commands.version: true
+      cloudpermissions.commands.reload: true
+  cloudpermissions.commands.version:
+    description: 'Outputs version information about CloudPermissions'
+  cloudpermissions.commands.reload:
+    description: 'Reloads the CloudPermissions configuration YAML'

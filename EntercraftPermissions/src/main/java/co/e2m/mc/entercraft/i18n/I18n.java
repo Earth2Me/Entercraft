@@ -4,10 +4,13 @@ import co.e2m.mc.entercraft.api.IComponentsPlugin;
 import co.e2m.mc.entercraft.api.Component;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.EnumMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
@@ -21,6 +24,11 @@ import lombok.Getter;
 // TODO: Specify file from which to load localization strings
 public final class I18n extends Component
 {
+	/**
+	 * Used as the locale for identifiers and other locale-independent strings.
+	 */
+	public static final Locale INVARIANT_LOCALE = Locale.ROOT;
+
 	private static final Map<Formats, String> formats = new EnumMap<>(Formats.class);
 	private static final Pattern tokenizeRegex = Pattern.compile("\\s+:");
 	private static final Matcher craftizeMatcher = Pattern.compile("&([^&])").matcher("");
@@ -41,14 +49,25 @@ public final class I18n extends Component
 	}
 
 	/**
+	 * Sets the primary instance.
+	 *
+	 * @param instance the instance to mark as the primary instance
+	 * @return the primary instance, for easy chaining
+	 */
+	public static I18n setPrimary(final I18n instance)
+	{
+		I18n.instance = instance;
+		return instance;
+	}
+
+	/**
 	 * Marks this instance as the primary internationalization manager, which will be called by static method.
 	 *
-	 * @return self, for easy chaining/assignment
+	 * @return self, for easy chaining
 	 */
 	public I18n makePrimary()
 	{
-		instance = this;
-		return this;
+		return setPrimary(instance);
 	}
 
 	/**
@@ -143,13 +162,14 @@ public final class I18n extends Component
 		}
 
 		try (
-				final FileReader fileReader = new FileReader(localeFile);
-				final BufferedReader reader = new BufferedReader(fileReader);
+				final FileInputStream inputStream = new FileInputStream(localeFile);
+				final InputStreamReader inputReader = new InputStreamReader(inputStream, Charset.forName("UTF-8"));
+				final BufferedReader rx = new BufferedReader(inputReader);
 			)
 		{
 			boolean isSuccess = false;
 
-			for (String line; (line = reader.readLine()) != null;)
+			for (String line; (line = rx.readLine()) != null;)
 			{
 				if (loadLine(line))
 				{

@@ -1,7 +1,7 @@
 package co.e2m.mc.entercraft.permissions.plugin;
 
-import co.e2m.mc.entercraft.api.ComponentsPlugin;
-import co.e2m.mc.entercraft.permissions.api.IEntercraftPermissionsPlugin;
+import co.e2m.mc.entercraft.ComponentsPlugin;
+import co.e2m.mc.entercraft.permissions.api.plugin.IEntercraftPermissionsPlugin;
 import co.e2m.mc.entercraft.permissions.api.commands.IPermissionsCommand;
 import co.e2m.mc.entercraft.permissions.commands.PermissionsCommand;
 import lombok.Getter;

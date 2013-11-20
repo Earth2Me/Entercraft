@@ -1,5 +1,5 @@
 
-package co.e2m.mc.entercraft.permissions.api;
+package co.e2m.mc.entercraft.permissions.api.plugin;
 
 import co.e2m.mc.entercraft.api.IComponentsPlugin;
 import co.e2m.mc.entercraft.permissions.api.commands.IPermissionsCommand;

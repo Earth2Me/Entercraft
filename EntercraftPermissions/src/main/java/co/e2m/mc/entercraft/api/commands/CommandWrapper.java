@@ -2,6 +2,8 @@ package co.e2m.mc.entercraft.api.commands;
 
 import co.e2m.mc.entercraft.api.IComponentsPlugin;
 import co.e2m.mc.entercraft.api.Component;
+import co.e2m.mc.entercraft.api.commands.ICommandWrapper;
+import co.e2m.mc.entercraft.api.commands.ISubCommand;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -184,5 +186,33 @@ public abstract class CommandWrapper extends Component implements ICommandWrappe
 		private final String label;
 		private final String[] args;
 		private final ISubCommand subCommand;
+
+		/**
+		 * Instantiates a new command info object.
+		 *
+		 * @param sender the original event sender
+		 * @param command the original event command
+		 * @param label the actual command alias used
+		 * @param args any applicable arguments
+		 * @param subCommand a subcommand, if applicable; otherwise, {@literal null}
+		 */
+		public CommandInfo(final CommandSender sender, final Command command, final String label, final String[] args, final ISubCommand subCommand)
+		{
+			this.sender = sender;
+			this.command = command;
+			this.label = label;
+			this.args = Arrays.copyOf(args, args.length);
+			this.subCommand = subCommand;
+		}
+
+		/**
+		 * Gets the arguments to be passed to the next event receive.
+		 *
+		 * @return the arguments
+		 */
+		public String[] getArgs()
+		{
+			return Arrays.copyOf(args, args.length);
+		}
 	}
 }

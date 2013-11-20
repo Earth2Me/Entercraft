@@ -1,5 +1,7 @@
-package co.e2m.mc.entercraft.api;
+package co.e2m.mc.entercraft;
 
+import co.e2m.mc.entercraft.api.IComponent;
+import co.e2m.mc.entercraft.api.IComponentsPlugin;
 import co.e2m.mc.entercraft.i18n.Formats;
 import co.e2m.mc.entercraft.i18n.I18n;
 import static co.e2m.mc.entercraft.i18n.I18n.i;

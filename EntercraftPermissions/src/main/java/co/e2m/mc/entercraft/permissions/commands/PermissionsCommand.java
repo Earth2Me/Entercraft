@@ -2,7 +2,7 @@
 package co.e2m.mc.entercraft.permissions.commands;
 
 import co.e2m.mc.entercraft.api.commands.CommandWrapper;
-import co.e2m.mc.entercraft.permissions.api.IEntercraftPermissionsPlugin;
+import co.e2m.mc.entercraft.permissions.api.plugin.IEntercraftPermissionsPlugin;
 import co.e2m.mc.entercraft.permissions.api.commands.IPermissionsCommand;
 
 

@@ -1,6 +1,8 @@
 
 package co.e2m.mc.entercraft.api;
 
+import co.e2m.mc.entercraft.api.IComponent;
+import co.e2m.mc.entercraft.api.IComponentsPlugin;
 import java.util.logging.Logger;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
